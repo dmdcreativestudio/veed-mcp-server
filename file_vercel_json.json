@@ -1,0 +1,73 @@
+{
+  "version": 2,
+  "name": "veed-mcp-server",
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "methods": ["GET"],
+      "dest": "/server.js"
+    },
+    {
+      "src": "/health",
+      "methods": ["GET"], 
+      "dest": "/server.js"
+    },
+    {
+      "src": "/tools/list",
+      "methods": ["POST"],
+      "dest": "/server.js"
+    },
+    {
+      "src": "/tools/call",
+      "methods": ["POST"],
+      "dest": "/server.js"
+    },
+    {
+      "src": "/test",
+      "methods": ["GET"],
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "server.js": {
+      "maxDuration": 30,
+      "memory": 1024
+    }
+  },
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods", 
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "X-Requested-With, Content-Type, Authorization"
+        }
+      ]
+    }
+  ]
+}
